@@ -58,4 +58,4 @@ class Printer:
 
         print(eval(działanie))
 
-#trochę zmieniona wersja
+#test czy cuś
