@@ -1,8 +1,7 @@
-import contours_copy2
+from contours_copy2 import Pieces
 import paint
 
 img = paint.img
 
-object = contours_copy2.Pieces()
-object.single_numbers(img)
-
+object = Pieces(img)
+object.cutting_out()
