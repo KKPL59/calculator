@@ -3,5 +3,5 @@ import paint
 
 img = paint.img
 
-object = Pieces(img)
-object.cutting_out()
+pieces = Pieces(img)
+pieces.cutting_out()
