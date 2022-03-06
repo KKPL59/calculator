@@ -1,0 +1,46 @@
+
+
+<WorkPlace>:
+    id: tło
+    canvas.before:
+        Color:
+            rgb: (0.2,0.2,0.2)
+        Rectangle:
+            size: self.width, self.height
+
+
+    Widget:
+        id: paint
+        size_hint: 0.45, 0.55
+        pos_hint: {"x":0, "y":0}
+        canvas.before:
+            Color:
+                rgb: (1, 1, 1)
+            Rectangle:
+                size: self.width, self.height
+                pos: self.x, self.y
+
+
+
+
+
+    Label:
+        id: mathematical_operations
+        size_hint: 1, 0.55
+        pos_hint: {"x":0, "y":0.55}
+        canvas.before:
+            Color:
+                rgb: (0, 0, 0)
+            Rectangle:
+                size: self.width, self.height
+                pos: self.x, self.y
+
+        text: root.printer()
+
+
+
+
+
+
+
+
