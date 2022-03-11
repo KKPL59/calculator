@@ -10,6 +10,7 @@ class Pieces:
         instancja znbajduje się w pliku main"""
 
         self.img = img
+        self.prediction = " "
 
     def img_contours_preapare(self):
         """Przygotowuje zdjęcie do wykrycia konturów, i hierarhizuje je, zapisując do zminnej
@@ -88,8 +89,12 @@ class Pieces:
                 # inicjuje funkcjie predictions z klay Img_here z pliku predictions.py
                 # a następinie dokonuje predykcji i zapisany wynik dodaje do listy
 
-                object = predictions.ImgHere(self.img1)
-                object.predictions_append()
+                imghere = predictions.ImgHere(self.img1)
+                self.prediction = imghere.predictions_append()
+                print(self.prediction)
 
-        # drukuje listę z zapisanym wynikiem
-        object.detected()
+
+
+
+        # # drukuje listę z zapisanym wynikiem
+        # print(imghere.predictions_append())
