@@ -2,17 +2,20 @@ import pickle
 
 
 class ImgHere:
+    """Przy pomocy pliku z klasyfikatorem dokonuje predykcji z dostarczonego
+    zdjęcia z pliku contours copy. Następnie zwraca tę predykcję"""
 
-    def __init__(self, img_1x784):
-        self.predictions = self.clssifiter.predict(img_1x784)
-
+    # otwiera plik z klasyfikatorem
     lista = []
     classifiter = open("classifiter_SVC_+.pkl", "rb")
     clssifiter = pickle.load(classifiter)
 
-    def predictions_append(self):
-        self.lista.append(self.predictions[0])
+    def __init__(self, img_1x784):
+        """Doknuje predykcji na podtawie otrzymanego zdjęcia."""
 
-    def detected(self):
-        print(self.lista)
-        self.classifiter.close()
+        self.predictions = self.clssifiter.predict(img_1x784)
+
+    def predictions_append(self):
+        """Zwraca predykcje"""
+
+        return self.predictions
