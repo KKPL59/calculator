@@ -25,9 +25,9 @@ class WorkPlace(FloatLayout):
     def on_touch_up(self, touch):
         self.licznik += 1
         if self.ids.paint.collide_point(touch.x, touch.y):
-            self.export_to_png("JD.png")
+            self.export_to_png("digit.png")
 
-            img = cv2.imread("JD.png")
+            img = cv2.imread("digit.png")
             img = img[300:600, 0:350]
 
             self.pieces = Pieces(img)
