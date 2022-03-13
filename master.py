@@ -8,8 +8,21 @@ from contours_copy2 import Pieces
 
 class WorkPlace(FloatLayout):
 
+    prediction = []
+    text =""
+
+    def clear(self):
+        self.prediction = []
+        self.ids.mathematical_operations.text = ""
+
+    def undo(self):
+        try: self.prediction.remove(" ")
+        except:  ValueError
+        self.prediction = self.prediction[:len(self.prediction)-1]
+
 
     def on_touch_down(self, touch):
+
         with self.ids.paint.canvas:
             Color(0, 0, 0)
             if self.ids.paint.collide_point(touch.x, touch.y):
@@ -33,10 +46,26 @@ class WorkPlace(FloatLayout):
             self.pieces = Pieces(img)
             self.pieces.cutting_out()
 
-            self.prediction = str(self.pieces.prediction)
-            self.ids.mathematical_operations.text = self.prediction
+            self.prediction.append(self.pieces.prediction[0])
+
+            # print([i for i in self.prediction])
+
+            try:
+                self.prediction.remove(" ")
+            except:
+                ValueError
+
+            for i in self.prediction:
+                if isinstance(i, float):
+                    i = int(i)
+                self.text += str(i)
+
+
+            self.ids.mathematical_operations.text = self.text
+            self.text = ""
 
             self.ids.paint.canvas.clear()
+            pass
         return super().on_touch_move(touch)
 
     # def printer(self):
