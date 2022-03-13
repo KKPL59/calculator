@@ -3,22 +3,25 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.graphics import Line, Color
 import cv2
 from contours_copy2 import Pieces
-
+from mathematical_operations import Priner
+from mathematical_operations import MathematicalOperations
 
 
 class WorkPlace(FloatLayout):
 
     prediction = []
     text =""
+    printer = Priner()
 
     def clear(self):
         self.prediction = []
-        self.ids.mathematical_operations.text = ""
+        self.ids.mathematical_operations.text = self.printer.circs(self.prediction)
 
     def undo(self):
         try: self.prediction.remove(" ")
         except:  ValueError
         self.prediction = self.prediction[:len(self.prediction)-1]
+        self.ids.mathematical_operations.text = self.printer.circs(self.prediction)
 
 
     def on_touch_down(self, touch):
@@ -47,25 +50,24 @@ class WorkPlace(FloatLayout):
             self.pieces.cutting_out()
 
             self.prediction.append(self.pieces.prediction[0])
-
-            # print([i for i in self.prediction])
-
-            try:
-                self.prediction.remove(" ")
-            except:
-                ValueError
-
-            for i in self.prediction:
-                if isinstance(i, float):
-                    i = int(i)
-                self.text += str(i)
+            self.ids.mathematical_operations.text = self.printer.circs(self.prediction)
 
 
-            self.ids.mathematical_operations.text = self.text
-            self.text = ""
-
+        #     try:
+        #         self.prediction.remove(" ")
+        #     except:
+        #         ValueError
+        #
+        #     for i in self.prediction:
+        #         if isinstance(i, float):
+        #             i = int(i)
+        #         self.text += str(i)
+        #
+        #
+        #     self.ids.mathematical_operations.text = self.text
+        #     self.text = ""
+        #
             self.ids.paint.canvas.clear()
-            pass
         return super().on_touch_move(touch)
 
     # def printer(self):
