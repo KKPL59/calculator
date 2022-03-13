@@ -21,9 +21,26 @@
                 size: self.width, self.height
                 pos: self.x, self.y
 
+    BoxLayout:
+        size_hint: 0.45, 0.05
+        pos_hint: {"x":0, "y":0.5}
+        id: buttons
+        canvas.before:
+            Color:
+                rgb: (0.2, 0.2, 0.2)
+            Rectangle:
+                size: self.width, self.height
+                pos: self.x, self.y
 
+        Button:
+            id: btn1
+            text: "wymaż"
+            on_press: root.clear()
 
-
+        Button:
+            id: btn2
+            text: "cofnij"
+            on_press: root.undo()
 
     Label:
         id: mathematical_operations
