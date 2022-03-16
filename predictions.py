@@ -7,7 +7,7 @@ class ImgHere:
 
     # otwiera plik z klasyfikatorem
     lista = []
-    classifiter = open("classifiter_SVC_+.pkl", "rb")
+    classifiter = open("classifiter_SVC_thresh.pkl", "rb")
     clssifiter = pickle.load(classifiter)
 
     def __init__(self, img_1x784):
