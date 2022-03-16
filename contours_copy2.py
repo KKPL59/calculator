@@ -18,7 +18,7 @@ class Pieces:
 
         # obraz na szary, progowanie i kontury
         self.img2 = cv2.cvtColor(self.img, cv2.COLOR_BGR2GRAY)
-        self.thresh = cv2.threshold(self.img2, 200, 254, cv2.THRESH_BINARY)[1]
+        self.thresh = cv2.threshold(self.img2, 200, 255, cv2.THRESH_BINARY)[1]
         self.contours, self.hierarchy = cv2.findContours(image=self.thresh, mode=cv2.RETR_TREE,
                                                          method=cv2.CHAIN_APPROX_SIMPLE)
 
