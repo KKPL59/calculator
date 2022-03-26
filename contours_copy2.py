@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-import predictions
+import predictions_api
 
 
 class Pieces:
@@ -80,18 +80,22 @@ class Pieces:
             self.img1 = cv2.copyMakeBorder(self.img1, 35, 35, 35, 35, cv2.BORDER_CONSTANT, value=255)
 
             # ostatecznie przygotowuje wycięty obraz pod dokonanie predykcji
-            if len(self.img1) != 0:
-                self.img1 = cv2.resize(self.img1, (28, 28))
-                self.img1 = cv2.bitwise_not(self.img1)
-                self.img1 = np.array([self.img1])
-                self.img1 = self.img1.reshape(self.img1.shape[0], -1)
+            self.img1 = cv2.resize(self.img1, (28, 28))
+            self.img1 = cv2.bitwise_not(self.img1)
+            self.img1 = np.array([self.img1])
+            self.img1 = self.img1.reshape(self.img1.shape[0], -1)
+            cv2.imwrite("digit.png", self.img1)
+            # inicjuje funkcjie predictions z klay Img_here z pliku predictions.py
+            # a następinie dokonuje predykcji i zapisany wynik dodaje do listy
 
-                # inicjuje funkcjie predictions z klay Img_here z pliku predictions.py
-                # a następinie dokonuje predykcji i zapisany wynik dodaje do listy
 
-                imghere = predictions.ImgHere(self.img1)
-                self.prediction = imghere.predictions_append()
-                print(self.prediction)
+            # cv2.imshow("img_contours", self.img1)
+            # cv2.waitKey(0)
+
+
+            imghere = predictions_api.ImgHere(self.img1)
+            self.prediction = imghere.get_prediction()
+            print(self.prediction)
 
 
 

@@ -4,7 +4,7 @@ from kivy.graphics import Line, Color
 import cv2
 from contours_copy2 import Pieces
 from mathematical_operations import Priner
-from mathematical_operations import MathematicalOperations
+# from mathematical_operations import MathematicalOperations
 
 
 class WorkPlace(FloatLayout):
@@ -22,14 +22,15 @@ class WorkPlace(FloatLayout):
     def undo(self):
         """usuwa po jednym znaku z płótna"""
 
-        # po usunięciu, a następnie dodaniu jednej cyfry pojawiało się " " więc jest usuuwane
-        try: self.prediction.remove(" ")
-        except:  ValueError
+        # po usunięciu, a następnie dodaniu jednej cyfry pojawiało się " " więc jest usuwane
+        try:
+            self.prediction.remove(" ")
+        except ValueError:
+            print(ValueError)
 
         # wypisuje się lista o 1 krótsza niż przed zmianą
         self.prediction = self.prediction[:len(self.prediction)-1]
         self.ids.mathematical_operations.text = self.printer.circs(self.prediction)
-
 
     def on_touch_down(self, touch):
         """rysuje linie i jest odpowiedzialna za wykrywanie dotyku"""
@@ -49,6 +50,7 @@ class WorkPlace(FloatLayout):
         return super().on_touch_move(touch)
 
     licznik = 0
+
     def on_touch_up(self, touch):
         """po uniesieniu palca zapisuje zdjęcie płótna i dokonuje predykcji"""
 
@@ -59,6 +61,7 @@ class WorkPlace(FloatLayout):
 
             img = cv2.imread("digit.png")
             img = img[300:600, 0:350]
+            cv2.imwrite("digit.png", img)
 
             # tutaj dokonuje się predykcja
             self.pieces = Pieces(img)
@@ -70,9 +73,6 @@ class WorkPlace(FloatLayout):
             self.ids.paint.canvas.clear()
         return super().on_touch_move(touch)
 
-    # def printer(self):
-    #     return str(self.licznik)
-
 
 class CalculatorApp(App):
 
@@ -81,7 +81,5 @@ class CalculatorApp(App):
 
 
 buttonapp = CalculatorApp()
-buttonapp.run()
-
-
-
+if __name__ == "__main__":
+    buttonapp.run()
