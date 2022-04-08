@@ -1,4 +1,5 @@
 
+
 <WorkPlace>:
     id: tło
     canvas.before:
@@ -10,21 +11,21 @@
 
     Widget:
         id: paint
-        size_hint: 0.45, 0.55
+        size_hint: 1, 0.5
         pos_hint: {"x":0, "y":0}
         canvas.before:
             Color:
                 rgb: (1, 1, 1)
             Rectangle:
 
-                size: self.width, self.height
+                size: 280, 280
                 pos: self.x, self.y
 
 
   
 
     BoxLayout:
-        size_hint: 0.45, 0.05
+        size_hint: 1, 0.05
         pos_hint: {"x":0, "y":0.5}
         id: buttons
         canvas.before:
@@ -46,7 +47,7 @@
 
     Label:
         id: mathematical_operations
-        size_hint: 1, 0.55
+        size_hint: 1, 0.40
         pos_hint: {"x":0, "y":0.55}
         canvas.before:
             Color:
@@ -55,12 +56,162 @@
                 size: self.width, self.height
                 pos: self.x, self.y
 
+    BoxLayout:
+        size_hint: 0.05, 0.05
+        pos_hint: {"x":0.82, "y":0.95}
+        id: mods
+        canvas.before:
+            Color:
+                rgb: (0.2, 0.2, 0.2)
+            Rectangle:
+                size: self.width, self.height
+                pos: self.x, self.y
+
+        Button:
+            id: mode
+            pos_hint:{"x":0.90, "y":0.35}
+            size_hint: 1, 1
+            #size_hint: None, None
+            #size: 10, 10
+            text: "photo"
+            on_press: root.manager.current = "photo"
+
+
+
+<Photo>:
+    orientation: 'landscape'
+    id: tło
+    canvas.before:
+        Color:
+            rgb: (0.2,0.2,0.2)
+        Rectangle:
+            size: self.width, self.height
+
+    FloatLayout:
+        size_hint: 1, 1
+        pos_hint: {"x":0, "y":0}
+        id: buttons
+        canvas.before:
+            Color:
+                rgb: (1, 0.2, 0.2)
+            Rectangle:
+                size: self.width, self.height
+                pos: self.x, self.y
+
+
+        Camera:
+            allow_stretch: True
+            keep_ratio:False
+            size_hint: None, None
+            size: (580, 280)
+            pos_hint: {"x":-0.53, "y":0.2}
+            id: camera
+            play:True
+            canvas.before:
+                PushMatrix
+                Rotate:
+                    angle: -90
+                    origin: self.center
+            canvas:
+                PopMatrix
+
+        BoxLayout:
+            size_hint: 0.05, 0.05
+            pos_hint: {"x":0.82, "y":0.95}
+            id: mods
+            canvas.after:
+                Color:
+                    rgb: (0.2, 0.2, 0.2)
+                Rectangle:
+                    size: self.width, self.height
+                    pos: self.x, self.y
+
+            Button:
+                id: mode
+                pos_hint:{"x":0.90, "y":0.35}
+                size_hint: 1, 1
+                #size_hint: None, None
+                #size: 10, 10
+                text: "draw"
+                on_press: root.manager.current = "workplace"
+
+
+        BoxLayout:
+            size_hint: 0.15, 0.15
+            pos_hint: {"x":0.45, "y":0.1}
+            id: mods
+            canvas.before:
+                Color:
+                    rgb: (0.2, 0.2, 0.2)
+                Rectangle:
+                    size: self.width, self.height
+                    pos: self.x, self.y
+
+            Button:
+                id: photo
+                text: "take photo"
+                on_press:
+                    root.take_p()
+                    root.manager.current = "results"
+                    root.licznik += 1
 
 
 
 
+    FloatLayout:
+        canvas.after:
+            Color:
+                rgb: (1, 1, 1)
+            Line:
+                points: [100, 250, 200, 250]
+
+            Line:
+                points: [100, 480, 200, 480]
 
 
+<Results>:
+    id: tło
+    canvas.before:
+        Color:
+            rgb: (0.2,0.2,0.2)
+        Rectangle:
+            size: self.width, self.height
 
+    Label:
+        id: result
 
+        size_hint: 1, 0.40
+        pos_hint: {"x":0, "y":0.55}
+        canvas.before:
+            Color:
+                rgb: (0, 0, 0)
+            Rectangle:
+                size: self.width, self.height
+                pos: self.x, self.y
 
+    BoxLayout:
+        size_hint: 0.1, 0.1
+        pos_hint: {"x":0.82, "y":0.95}
+        id: mods
+        canvas.before:
+            Color:
+                rgb: (0.2, 0.2, 0.2)
+            Rectangle:
+                size: self.width, self.height
+                pos: self.x, self.y
+
+        Button:
+            id: mode
+            size_hint: 1, 1
+            #size_hint: None, None
+            #size: 10, 10
+            text: "draw"
+            on_press: root.manager.current = "workplace"
+
+        Button:
+            id: kurwik
+            size_hint: 1, 1
+            #size_hint: None, None
+            #size: 10, 10
+            text: "kurwik"
+            on_press: root.results_printer()
