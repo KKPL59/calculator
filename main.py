@@ -1,20 +1,73 @@
 from kivy.app import App
-from kivy.uix.floatlayout import FloatLayout
 from kivy.graphics import Line, Color
-import cv2
-from contours_copy2 import Pieces
+from kivy.core.window import Window
+from kivy.uix.screenmanager import ScreenManager, Screen
 from mathematical_operations import Priner
-# from mathematical_operations import MathematicalOperations
+import predictions_api
 
 
-class WorkPlace(FloatLayout):
+
+class Results(Screen):
+    Window.size = 280, 520
+    text = ""
+    printer = Priner()
+
+
+    def results(self):
+        """powinno zwrócić wynik predycji"""
+        self.ids.result.text = Photo.wynik
+
+
+
+    def results_printer(self):
+        """wywołuje funkcje z wynikiem predykcji XD"""
+        self.results()
+
+
+
+
+
+
+class Photo(Screen):
+    Window.size = 280, 520
+    licznik = 0
+    wynik = ""
+    prediction = []
+    printer = Priner()
+
+    def take_p(self):
+        """robi zrzut ekranu, podaje go do predictions_api, gdzie wysyłane jest żądanie i odbiera wynik predykcji"""
+
+        Photo.licznik += 1
+
+        self.export_to_png("digit.png")
+        self.url = "http://127.0.0.1:5000/photo"
+
+        # podaje obraz do funkcji predictions_api
+        self.imghere = predictions_api.ImgHere(1)
+        self.prediction_api = self.imghere.get_prediction_photo()
+
+        self.prediction_api = str(self.prediction_api)
+
+        # przetwarza wynik
+        self.prediction.append(self.prediction_api)
+        Photo.wynik = self.printer.circs(self.prediction)
+
+
+
+
+
+class WorkPlace(Screen):
+    """tutaj wywoływane są wszystkie funkcje, obierany jest narysowany obraz"""
 
     prediction = []
     text = ""
     printer = Priner()
+    Window.size = 280, 520
+
 
     def clear(self):
-        """słóży do czyszczenia płótna"""
+        """służy do czyszczenia płótna"""
 
         self.prediction = []
         self.ids.mathematical_operations.text = self.printer.circs(self.prediction)
@@ -29,7 +82,7 @@ class WorkPlace(FloatLayout):
             print(ValueError)
 
         # wypisuje się lista o 1 krótsza niż przed zmianą
-        self.prediction = self.prediction[:len(self.prediction)-1]
+        self.prediction = self.prediction[:len(self.prediction) - 1]
         self.ids.mathematical_operations.text = self.printer.circs(self.prediction)
 
     def on_touch_down(self, touch):
@@ -39,7 +92,7 @@ class WorkPlace(FloatLayout):
         with self.ids.paint.canvas:
             Color(0, 0, 0)
             if self.ids.paint.collide_point(touch.x, touch.y):
-                touch.ud['line'] = Line(points=(touch.x, touch.y), width=7)
+                touch.ud['line'] = Line(points=(touch.x, touch.y), width=5)
             return super().on_touch_down(touch)
 
     def on_touch_move(self, touch):
@@ -59,25 +112,30 @@ class WorkPlace(FloatLayout):
         if self.ids.paint.collide_point(touch.x, touch.y):
             self.export_to_png("digit.png")
 
-            img = cv2.imread("digit.png")
-            img = img[300:600, 0:350]
-            cv2.imwrite("digit.png", img)
+            self.url = "https://imgpred.herokuapp.com/digit"
+            self.imghere = predictions_api.ImgHere(1)
+            self.prediction_api = self.imghere.get_prediction_digit()
+            print(self.prediction)
 
-            # tutaj dokonuje się predykcja
-            self.pieces = Pieces(img)
-            self.pieces.cutting_out()
-
-            self.prediction.append(self.pieces.prediction[0])
+            self.prediction.append(self.prediction_api[0])
             self.ids.mathematical_operations.text = self.printer.circs(self.prediction)
 
             self.ids.paint.canvas.clear()
+
         return super().on_touch_move(touch)
 
 
 class CalculatorApp(App):
 
     def build(self):
-        return WorkPlace()
+        self.menager = ScreenManager()
+        self.menager.add_widget(WorkPlace(name="workplace"))
+        self.menager.add_widget(Photo(name="photo"))
+        self.menager.add_widget(Results(name="results"))
+
+
+        return self.menager
+
 
 
 buttonapp = CalculatorApp()
