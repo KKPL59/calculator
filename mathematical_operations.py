@@ -10,7 +10,7 @@ class Priner:
 
         for i in operation:
             if i != " ":
-                i = int(i)
+
                 i = str(i)
                 self.text += i
 
@@ -21,11 +21,5 @@ class Priner:
         self.text = ""
 
 
-
-
 class MathematicalOperations(Priner):
     pass
-
-
-# printer = Priner(["2", "10", "2"])
-# print(printer.circs())
