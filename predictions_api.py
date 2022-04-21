@@ -18,7 +18,6 @@ class ImgHere:
 
     def get_prediction_digit(self):
         self.api = "https://imgpred.herokuapp.com/digit"
-        # self.api = "http://127.0.0.1:5000/digit"
 
         self.headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 
