@@ -5,8 +5,6 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from mathematical_operations import Priner
 import predictions_api
 
-
-
 class Results(Screen):
     Window.size = 280, 520
     text = ""
@@ -25,9 +23,6 @@ class Results(Screen):
 
 
 
-
-
-
 class Photo(Screen):
     Window.size = 280, 520
     licznik = 0
@@ -40,17 +35,19 @@ class Photo(Screen):
 
         Photo.licznik += 1
 
-        self.export_to_png("digit.png")
+        self.export_to_png(f"digit.png")
         self.url = "http://127.0.0.1:5000/photo"
 
         # podaje obraz do funkcji predictions_api
         self.imghere = predictions_api.ImgHere(1)
         self.prediction_api = self.imghere.get_prediction_photo()
+        print("taking...")
 
         self.prediction_api = str(self.prediction_api)
 
         # przetwarza wynik
         self.prediction.append(self.prediction_api)
+        print(self.prediction)
         Photo.wynik = self.printer.circs(self.prediction)
 
 
@@ -64,6 +61,7 @@ class WorkPlace(Screen):
     text = ""
     printer = Priner()
     Window.size = 280, 520
+    # Window.size = 1080, 2145
 
 
     def clear(self):
@@ -92,7 +90,7 @@ class WorkPlace(Screen):
         with self.ids.paint.canvas:
             Color(0, 0, 0)
             if self.ids.paint.collide_point(touch.x, touch.y):
-                touch.ud['line'] = Line(points=(touch.x, touch.y), width=5)
+                touch.ud['line'] = Line(points=(touch.x, touch.y), width=4) # 7 test 5 jest dobrze
             return super().on_touch_down(touch)
 
     def on_touch_move(self, touch):
@@ -110,10 +108,14 @@ class WorkPlace(Screen):
         # rozbi screena płotana
         self.licznik += 1
         if self.ids.paint.collide_point(touch.x, touch.y):
-            self.export_to_png("digit.png")
+            # self.ids.paint.export_to_png(r"C:\Users\lukas\PycharmProjects\img_to_string\test\digit.png")
+            print(App().user_data_dir)
+            self.export_to_png(f"{App().user_data_dir}/digit.png")
 
             self.url = "https://imgpred.herokuapp.com/digit"
             self.imghere = predictions_api.ImgHere(1)
+
+            print("getting prediction...")
             self.prediction_api = self.imghere.get_prediction_digit()
             print(self.prediction)
 
@@ -121,6 +123,8 @@ class WorkPlace(Screen):
             self.ids.mathematical_operations.text = self.printer.circs(self.prediction)
 
             self.ids.paint.canvas.clear()
+
+            print(Window.size)
 
         return super().on_touch_move(touch)
 
